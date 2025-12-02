@@ -105,8 +105,6 @@ public class ChatterboxClient {
         } catch (UnsupportedOperationException e) {
             System.err.println(e.getMessage());
         }
-
-        System.out.println("Exiting...");
     }
 
     /**
