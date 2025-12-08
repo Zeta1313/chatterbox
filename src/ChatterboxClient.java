@@ -213,16 +213,25 @@ public class ChatterboxClient {
      * @throws IllegalArgumentException for bad credentials / server rejection
      */
     public void authenticate() throws IOException, IllegalArgumentException {
-        String line;
         OutputStreamWriter outputStreamWriter = new OutputStreamWriter(userOutput, java.nio.charset.StandardCharsets.UTF_8);
         BufferedWriter userWriter = new BufferedWriter(outputStreamWriter);
-        while((line=serverReader.readLine())!=null) {
-            userWriter.write(line);
-            userWriter.newLine();
-            userWriter.flush();
+
+        userWriter.write(serverReader.readLine());
+        userWriter.newLine();
+        userWriter.flush();
+
+        serverWriter.write(username + " " + password + "\n");
+        serverWriter.flush();
+        String response = serverReader.readLine();
+        if (response.charAt(response.length()-1) != '!') {
+            throw new IllegalArgumentException(response);
         }
-        serverWriter.write(username + " " + password + "/n");
-        serverReader.readLine();
+        else {
+            userWriter.write(response);
+            userWriter.flush();
+            return;
+        }
+
         // Hint: use the username/password instance variables, DO NOT READ FROM userInput
         // send messages using serverWriter (don't forget to flush!)
     }
