@@ -158,7 +158,7 @@ public class ChatterboxClient {
 
         this.host = options.getHost();
         this.port = options.getPort();
-        this.username = options.getPassword();
+        this.username = options.getUsername();
         this.password = options.getPassword();
     }
 
