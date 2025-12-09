@@ -268,6 +268,7 @@ public class ChatterboxClient {
         // Listen on serverReader
         // Write to userOutput, NOT System.out
         String line;
+
         OutputStreamWriter outputStreamWriter = new OutputStreamWriter(userOutput, java.nio.charset.StandardCharsets.UTF_8);
         BufferedWriter userWriter = new BufferedWriter(outputStreamWriter);
 
@@ -296,10 +297,27 @@ public class ChatterboxClient {
      * - If writing fails (IOException), the connection is gone:
      *   print a message to userOutput and exit.
      */
-    public void sendOutgoingChats() {
+    public void sendOutgoingChats() throws IOException{
         // Use the userInput to read, NOT System.in directly
         // loop forever reading user input
         // write to serverOutput
+        String line;
+
+        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(userOutput, java.nio.charset.StandardCharsets.UTF_8);
+        BufferedWriter userWriter = new BufferedWriter(outputStreamWriter);
+
+        while (true) {
+            try {
+                line = userInput.nextLine();
+                serverWriter.write(line);
+                serverWriter.newLine();
+                serverWriter.flush();
+            }
+            catch (IOException e) {
+                userWriter.write("Server error");
+                return;
+            }
+        }
     }
 
     public String getHost() {
