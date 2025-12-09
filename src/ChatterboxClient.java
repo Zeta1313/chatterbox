@@ -290,7 +290,7 @@ public class ChatterboxClient {
             }
         }
         catch (IOException e) {
-            userWriter.write("IO exception: " + e);
+            userWriter.write("Error" + e);
             return;
         }
     }
@@ -318,13 +318,16 @@ public class ChatterboxClient {
 
         while (true) {
             try {
+                if (!userInput.hasNextLine()) {
+                    throw new IOException("Session ended");
+                }
                 line = userInput.nextLine();
                 serverWriter.write(line);
                 serverWriter.newLine();
                 serverWriter.flush();
             }
             catch (IOException e) {
-                userWriter.write("IOException: " + e);
+                userWriter.write("Error:" + e);
                 return;
             }
         }
