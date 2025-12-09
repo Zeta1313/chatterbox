@@ -247,7 +247,17 @@ public class ChatterboxClient {
      * @throws IOException
      */
     public void streamChat() throws IOException {
-        printIncomingChats();
+        Thread incoming = new Thread(() -> {
+           try {printIncomingChats();}
+           catch(IOException e) {}
+        });
+        Thread outgoing = new Thread(() -> {
+           try {sendOutgoingChats();}
+           catch(IOException e) {}
+        });
+
+        incoming.start();
+        outgoing.start();
     }
 
     /**
@@ -314,7 +324,7 @@ public class ChatterboxClient {
                 serverWriter.flush();
             }
             catch (IOException e) {
-                userWriter.write("Server error");
+                userWriter.write("IOException: " + e);
                 return;
             }
         }
